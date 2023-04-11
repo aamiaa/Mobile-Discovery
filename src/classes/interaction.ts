@@ -8,6 +8,7 @@ export default class Interaction {
 
 	private id: string
 	private token: string
+	private responded = false
 
 	public type: InteractionType
 	public data: InteractionData["data"]
@@ -59,6 +60,10 @@ export default class Interaction {
 	}
 
 	public respond(data: object) {
+		if(this.responded)
+			throw new Error("Already responded to this interaction!")
+
+		this.responded = true
 		return this.res.send(data)
 	}
 
