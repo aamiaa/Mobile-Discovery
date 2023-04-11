@@ -20,12 +20,15 @@ export default {
 				flags: 64
 			})
 
-		const query: string = interaction.data.options[0].value
+		let query: string = interaction.data.options[0].value
 		if(query.length < 2)
 			return interaction.message({
 				content: ":warning: Error: Your search must be longer than one letter!",
 				flags: 64
 			})
+
+		if(query.length > 100)
+			query = query.substring(0, 100)
 
 		for(let word of query.split(" ")) {
 			if(BlacklistedWords.includes(word.toLowerCase())) {
