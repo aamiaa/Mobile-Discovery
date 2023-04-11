@@ -1,8 +1,9 @@
 import axios from "axios"
+import { SearchHit } from "../classes/search_response"
 
 export default class AlgoliaSearch {
 	private readonly limit = 10
-	private offset = 0
+	private page = 0
 	private query: string
 	private filters = ["auto_removed: false", "approximate_presence_count>0", "approximate_member_count>200"]
 
@@ -10,7 +11,10 @@ export default class AlgoliaSearch {
 		this.query = query
 	}
 
-	public async exec() {
+	public async exec(visiblePage?: number): Promise<{query: string, page: number, visiblePage: number, hits: SearchHit[], count: number, pages: number}> {
+		if(visiblePage)
+			this.page = visiblePage-1
+
 		let res = await axios({
 			method: "post",
 			url: "https://nktzz4aizu-dsn.algolia.net/1/indexes/prod_discoverable_guilds/query?x-algolia-agent=Algolia%20for%20JavaScript%20(4.1.0)%3B%20Browser",
@@ -28,16 +32,21 @@ export default class AlgoliaSearch {
 			data: JSON.stringify({
 				query: this.query,
 				filters: this.filters.join(" AND "),
-				length: this.limit,
-				offset: this.offset,
+				hitsPerPage: this.limit,
+				page: this.page,
+				optionalFilters: ["preferred_locale: en-US"],
 				restrictSearchableAttributes: ["name","description","keywords","categories.name","categories.name_localizations.en-US","primary_category.name","primary_category.name_localizations.en-US","vanity_url_code"]
 			})
 		})
 
 		return {
+			query: this.query,
+			page: this.page,
+			visiblePage: this.page + 1,
+
 			hits: res.data.hits,
 			count: res.data.nbHits,
-			pages: Math.ceil(res.data.nbHits/this.limit)
+			pages: res.data.nbPages
 		}
 	}
 }

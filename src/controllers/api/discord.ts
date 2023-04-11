@@ -18,7 +18,10 @@ class DiscordController {
 				break
 			case InteractionType.MESSAGE_COMPONENT:
 			case InteractionType.MODAL_SUBMIT:
-				const interactionName = interaction.data.custom_id
+				let interactionName = interaction.data.custom_id
+				if(interactionName.startsWith("page_")) //TODO: some better way
+					interactionName = "page"
+
 				const nameCollision = Commands.getInteraction(interactionName)
 				if(nameCollision)
 					return await nameCollision.callback(interaction)

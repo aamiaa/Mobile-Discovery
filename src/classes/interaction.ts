@@ -41,6 +41,18 @@ export default class Interaction {
 		} catch(ex) {
 			throw {
 				error: new Error(`Interaction response failed for /webhooks/${process.env.APPLICATION_ID}/${this.token}/messages/${messageId}`),
+				response: JSON.stringify(ex.response.data),
+			}
+		}
+	}
+
+	public async getMessage(messageId: string) {
+		try {
+			let res = await axios.get(`https://discord.com/api/v9/webhooks/${process.env.APPLICATION_ID}/${this.token}/messages/${messageId}`)
+			return res.data
+		} catch(ex) {
+			throw {
+				error: new Error(`Interaction response failed for /webhooks/${process.env.APPLICATION_ID}/${this.token}/messages/${messageId}`),
 				response: ex.response.data,
 			}
 		}
@@ -54,6 +66,12 @@ export default class Interaction {
 		return this.respond({
 			type: InteractionCallback.DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE,
 			data: data
+		})
+	}
+
+	public deferComponent() {
+		return this.respond({
+			type: InteractionCallback.DEFERRED_UPDATE_MESSAGE
 		})
 	}
 
