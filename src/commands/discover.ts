@@ -13,13 +13,6 @@ export default {
 	},
 
 	async callback(interaction: Interaction) {
-		const pos = MurmurHashV3(`2023-02_discord_embeds:${interaction.user.id}`) % 10000
-		if((pos >= 0 && pos < 100) || (pos >= 200 && pos < 1100) || (pos >= 2000 && pos < 3000) || (pos >= 4000 && pos < 7000))
-			return interaction.message({
-				content: "Unfortunately you don't have the Discord beta feature that this bot relies on. Please check back another time!",
-				flags: 64
-			})
-
 		let query: string = interaction.data.options[0].value
 		if(query.length < 2)
 			return interaction.message({
