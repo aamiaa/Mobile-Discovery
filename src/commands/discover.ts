@@ -1,7 +1,6 @@
 import Interaction from "../classes/interaction";
 import SearchResponse from "../classes/search_response";
 import AlgoliaSearch from "../providers/algolia";
-import MurmurHashV3 from "../util/murmur3";
 
 // From the discord client
 const BlacklistedWords = ['pepe', 'nude', 'nsfw', '18+', 'hentai', 'sex', 'porn', 'shit', 'rape', 'fuck', 'penis', 'pussy', 'incest', 'cum', 'jizz', 'cuck', 'kkk', 'terrorism']
