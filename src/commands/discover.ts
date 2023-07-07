@@ -2,13 +2,21 @@ import Interaction from "../classes/interaction";
 import SearchResponse from "../classes/search_response";
 import AlgoliaSearch from "../providers/algolia";
 
-// From the discord client
+// Taken from the Discord client
 const BlacklistedWords = ['pepe', 'nude', 'nsfw', '18+', 'hentai', 'sex', 'porn', 'shit', 'rape', 'fuck', 'penis', 'pussy', 'incest', 'cum', 'jizz', 'cuck', 'kkk', 'terrorism']
 
 export default {
 	data: {
 		name: "discover",
-		description: "Browse public servers in discovery"
+		description: "Browse public servers in server discovery",
+		options: [
+			{
+				type: 3,
+				name: "search",
+				description: "Your search query",
+				required: true
+			}
+		]
 	},
 
 	async callback(interaction: Interaction) {
@@ -22,7 +30,7 @@ export default {
 		if(query.length > 100)
 			query = query.substring(0, 100)
 
-		for(let word of query.split(" ")) {
+		for(const word of query.split(" ")) {
 			if(BlacklistedWords.includes(word.toLowerCase())) {
 				return interaction.message({
 					content: ":warning: Error: Your search contains words disallowed by Discord!",

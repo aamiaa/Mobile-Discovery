@@ -12,22 +12,22 @@ export default {
 		interaction.deferComponent()
 
 		const pageNum = parseInt((interaction.data.components[0].components[0] as TextInputComponent).value)
-		if(!pageNum && pageNum < 1)
+		if(!pageNum || pageNum < 1)
 			return interaction.followUp({
 				content: "Invalid page number was provided!",
 				flags: 64
 			})
 
-		let msg = await interaction.getMessage("@original")
+		const msg = await interaction.getMessage("@original")
 
-		let maxPage = parseInt(msg.components[0].components.pop().label)
+		const maxPage = parseInt(msg.components[0].components.pop().label)
 		if(pageNum > maxPage)
 			return interaction.followUp({
 				content: "Invalid page number was provided!",
 				flags: 64
 			})
 
-		let query = msg.content.match(/^\d+ communities for '(.+)'$/)[1]
+		const query: string = msg.content.match(/^\d+ communities for '(.+)'$/)[1]
 
 		const search = new AlgoliaSearch(query)
 		const results = await search.exec(pageNum)

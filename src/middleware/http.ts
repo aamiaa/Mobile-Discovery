@@ -4,12 +4,12 @@ class Http {
 	public static mount(app: express.Application) {
 		app.disable("x-powered-by")
 
-		//Don't trust arbitrary x-forwarded-for headers
+		// Don't trust arbitrary x-forwarded-for headers
 		app.set("trust proxy", "loopback")
 
+		// Raw body is needed to verify signature
 		app.use((req, res, next) => {
 			let data = ""
-			
 			req.on("data", chunk => { 
 				data += chunk;
 			})

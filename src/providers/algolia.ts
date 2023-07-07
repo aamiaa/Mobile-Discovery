@@ -17,7 +17,7 @@ export default class AlgoliaSearch {
 
 		let res = await axios({
 			method: "post",
-			url: "https://nktzz4aizu-dsn.algolia.net/1/indexes/prod_discoverable_guilds/query?x-algolia-agent=Algolia%20for%20JavaScript%20(4.1.0)%3B%20Browser",
+			url: "https://nktzz4aizu-dsn.algolia.net/1/indexes/prod_discoverable_guilds/query",
 			headers: {
 				"Content-Type": "application/x-www-form-urlencoded",
 				"Origin": "https://discord.com",

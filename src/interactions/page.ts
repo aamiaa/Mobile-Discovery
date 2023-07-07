@@ -10,7 +10,8 @@ export default {
 	},
 
 	async callback(interaction: Interaction) {
-		let pageId = interaction.data.custom_id
+		const pageId = interaction.data.custom_id
+
 		if(pageId === "page_custom") {
 			return interaction.respond({
 				type: InteractionCallback.MODAL,
@@ -40,10 +41,10 @@ export default {
 
 		interaction.deferComponent()
 
-		let msg = await interaction.getMessage("@original")
+		const msg = await interaction.getMessage("@original")
 
-		let query = msg.content.match(/^\d+ communities for '(.+)'$/)[1]
-		let pageNum = parseInt(pageId.match(/page_(\d+)/)[1])
+		const query: string = msg.content.match(/^\d+ communities for '(.+)'$/)[1]
+		const pageNum = parseInt(pageId.match(/page_(\d+)/)[1])
 
 		const search = new AlgoliaSearch(query)
 		const results = await search.exec(pageNum)
