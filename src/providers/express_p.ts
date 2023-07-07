@@ -28,7 +28,7 @@ class Express {
 	}
 
 	public init() {
-		this.express.listen(6974, "0.0.0.0", () => console.log("Webserv started!"));
+		this.express.listen(parseInt(process.env.PORT), "0.0.0.0", () => console.log("Webserv started!"));
 	}
 }
 
