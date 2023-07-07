@@ -1,4 +1,4 @@
-import { ComponentType } from "../interface/component"
+import { Component, ComponentType } from "../interface/component"
 import { AddCommas } from "../util/num"
 
 export interface SearchHit {
@@ -75,7 +75,7 @@ export default class SearchResponse {
 			91. 1 ... 89 90 91
 	*/
 	private makePages() {
-		let pages = []
+		const pages: Component[] = []
 
 		if(this.data.pages <= 5) {
 			for(let i=1;i<=this.data.pages;i++) {

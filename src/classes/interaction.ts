@@ -1,5 +1,5 @@
 import axios from "axios"
-import { InteractionType, InteractionData, InteractionCallback } from "../interface/interaction"
+import { InteractionType, InteractionData, InteractionCallback, InteractionResponse } from "../interface/interaction"
 import { Message } from "../interface/message"
 import { Response } from "express"
 
@@ -59,7 +59,7 @@ export default class Interaction {
 		}
 	}
 
-	public respond(data: object) {
+	public respond(data: InteractionResponse) {
 		if(this.responded)
 			throw new Error("Already responded to this interaction!")
 

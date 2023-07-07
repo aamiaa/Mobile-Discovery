@@ -1,5 +1,6 @@
 import Interaction from "../classes/interaction";
 import SearchResponse from "../classes/search_response";
+import { TextInputComponent } from "../interface/component";
 import AlgoliaSearch from "../providers/algolia";
 
 export default {
@@ -10,7 +11,7 @@ export default {
 	async callback(interaction: Interaction) {
 		interaction.deferComponent()
 
-		let pageNum = parseInt(interaction.data.components[0].components[0].value)
+		const pageNum = parseInt((interaction.data.components[0].components[0] as TextInputComponent).value)
 		if(!pageNum && pageNum < 1)
 			return interaction.followUp({
 				content: "Invalid page number was provided!",

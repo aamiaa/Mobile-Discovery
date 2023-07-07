@@ -1,3 +1,5 @@
+import { ActionRowComponent } from "./component"
+
 export enum InteractionType {
 	PING = 1,
 	APPLICATION_COMMAND = 2,
@@ -36,7 +38,7 @@ export interface InteractionData {
 		target_id?: string,
 
 		custom_id?: string,
-		components?: any[]
+		components?: ActionRowComponent[]
 	},
 	guild_id?: string,
 	channel_id?: string,
@@ -48,4 +50,9 @@ export interface InteractionData {
 	app_permissions?: string,
 	locale?: string,
 	guild_locale?: string
+}
+
+export interface InteractionResponse {
+	type: InteractionCallback,
+	data?: Record<string, any>
 }
