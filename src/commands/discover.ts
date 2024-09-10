@@ -15,6 +15,11 @@ export default {
 				name: "search",
 				description: "Your search query",
 				required: true
+			},
+			{
+				type: 5,
+				name: "ephemeral",
+				description: "Whether the response should be ephemeral (defaults to true)",
 			}
 		],
 		integration_types: [0, 1],
@@ -23,6 +28,8 @@ export default {
 
 	async callback(interaction: Interaction) {
 		let query: string = interaction.data.options[0].value
+		let ephemeral = interaction.data.options[1]?.value ?? true
+
 		if(query.length < 2)
 			return interaction.message({
 				content: ":warning: Error: Your search must be longer than one letter!",
@@ -42,7 +49,7 @@ export default {
 		}
 
 		interaction.defer({
-			flags: 64
+			flags: ephemeral ? 64 : 0
 		})
 
 		const search = new AlgoliaSearch(query)
