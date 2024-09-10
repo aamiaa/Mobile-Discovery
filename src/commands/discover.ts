@@ -16,7 +16,9 @@ export default {
 				description: "Your search query",
 				required: true
 			}
-		]
+		],
+		integration_types: [0, 1],
+		contexts: [0, 1, 2]
 	},
 
 	async callback(interaction: Interaction) {
