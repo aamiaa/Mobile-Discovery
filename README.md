@@ -1,8 +1,8 @@
 # Mobile Discovery
 A simple Discord bot which allows you to browse the in-app Discovery and preview the servers. Useful if you're on mobile.
-It takes advantage of the semi-recent feature (`2023-02_discord_embeds`) which enables previewing discoverable servers via message links.
+It takes advantage of a feature introduced in 2023 (`2023-02_discord_embeds`) which enables previewing discoverable servers via message links.
 
-A deployed version of the bot can be found here: https://top.gg/bot/1092749324624089149
+A deployed version of the bot can be found here: https://discord.com/application-directory/1092749324624089149
 
 # Setting up
 This uses an http server for responding to interactions. It requires no database and could technically run server-less.
