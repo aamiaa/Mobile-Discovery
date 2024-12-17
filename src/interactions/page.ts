@@ -2,7 +2,7 @@ import Interaction from "../classes/interaction";
 import SearchResponse from "../classes/search_response";
 import { ComponentType } from "../interface/component";
 import { InteractionCallback } from "../interface/interaction";
-import AlgoliaSearch from "../providers/algolia";
+import DiscoverySearch from "../providers/discovery";
 
 export default {
 	data: {
@@ -46,7 +46,7 @@ export default {
 		const query: string = msg.content.match(/^\d+ communities for '(.+)'$/)[1]
 		const pageNum = parseInt(pageId.match(/page_(\d+)/)[1])
 
-		const search = new AlgoliaSearch(query)
+		const search = new DiscoverySearch(query)
 		const results = await search.exec(pageNum)
 
 		interaction.edit("@original", new SearchResponse(results).make())

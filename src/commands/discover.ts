@@ -1,6 +1,7 @@
 import Interaction from "../classes/interaction";
 import SearchResponse from "../classes/search_response";
-import AlgoliaSearch from "../providers/algolia";
+import DiscoverySearch from "../providers/discovery";
+import Discord from "../providers/discord";
 
 // Taken from the Discord client
 const BlacklistedWords = ['pepe', 'nude', 'nsfw', '18+', 'hentai', 'sex', 'porn', 'shit', 'rape', 'fuck', 'penis', 'pussy', 'incest', 'cum', 'jizz', 'cuck', 'kkk', 'terrorism']
@@ -47,12 +48,18 @@ export default {
 				})
 			}
 		}
+		if(!await Discord.checkTerm(query)) {
+			return interaction.message({
+				content: ":warning: Error: Your search contains words disallowed by Discord!",
+				flags: 64
+			})
+		}
 
 		interaction.defer({
 			flags: ephemeral ? 64 : 0
 		})
 
-		const search = new AlgoliaSearch(query)
+		const search = new DiscoverySearch(query)
 		const results = await search.exec()
 
 		interaction.edit("@original", new SearchResponse(results).make())

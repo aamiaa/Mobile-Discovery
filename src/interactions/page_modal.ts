@@ -1,7 +1,7 @@
 import Interaction from "../classes/interaction";
 import SearchResponse from "../classes/search_response";
 import { TextInputComponent } from "../interface/component";
-import AlgoliaSearch from "../providers/algolia";
+import DiscoverySearch from "../providers/discovery";
 
 export default {
 	data: {
@@ -29,7 +29,7 @@ export default {
 
 		const query: string = msg.content.match(/^\d+ communities for '(.+)'$/)[1]
 
-		const search = new AlgoliaSearch(query)
+		const search = new DiscoverySearch(query)
 		const results = await search.exec(pageNum)
 
 		interaction.edit("@original", new SearchResponse(results).make())
