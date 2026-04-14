@@ -1,4 +1,3 @@
-import axios from "axios"
 import { InteractionType, InteractionData, InteractionCallback, InteractionResponse } from "../interface/interaction"
 import { Message } from "../interface/message"
 import { Response } from "express"
@@ -26,37 +25,41 @@ export default class Interaction {
 	}
 
 	public async followUp(data: object) {
-		try {
-			await axios.post(`https://discord.com/api/v9/webhooks/${process.env.APPLICATION_ID}/${this.token}`, data)
-		} catch(ex) {
-			throw {
-				error: new Error(`Interaction response failed for /webhooks/${this.id}/${this.token}/callback`),
-				response: ex.response.data,
+		const res = await fetch(`https://discord.com/api/v9/webhooks/${process.env.APPLICATION_ID}/${this.token}`, {
+			method: "POST",
+			body: JSON.stringify(data),
+			headers: {
+				"Content-Type": "application/json"
 			}
+		})
+
+		if(!res.ok) {
+			throw new Error(`Interaction response failed with code ${res.status} for /webhooks/${this.id}/${this.token}/callback`)
 		}
 	}
 
 	public async edit(messageId: string, data: object) {
-		try {
-			await axios.patch(`https://discord.com/api/v9/webhooks/${process.env.APPLICATION_ID}/${this.token}/messages/${messageId}`, data)
-		} catch(ex) {
-			throw {
-				error: new Error(`Interaction response failed for /webhooks/${process.env.APPLICATION_ID}/${this.token}/messages/${messageId}`),
-				response: JSON.stringify(ex.response.data),
+		const res = await fetch(`https://discord.com/api/v9/webhooks/${process.env.APPLICATION_ID}/${this.token}/messages/${messageId}`, {
+			method: "PATCH",
+			body: JSON.stringify(data),
+			headers: {
+				"Content-Type": "application/json"
 			}
+		})
+
+		if(!res.ok) {
+			throw new Error(`Interaction response failed with code ${res.status} for /webhooks/${process.env.APPLICATION_ID}/${this.token}/messages/${messageId}`)
 		}
 	}
 
 	public async getMessage(messageId: string) {
-		try {
-			let res = await axios.get(`https://discord.com/api/v9/webhooks/${process.env.APPLICATION_ID}/${this.token}/messages/${messageId}`)
-			return res.data
-		} catch(ex) {
-			throw {
-				error: new Error(`Interaction response failed for /webhooks/${process.env.APPLICATION_ID}/${this.token}/messages/${messageId}`),
-				response: ex.response.data,
-			}
+		const res = await fetch(`https://discord.com/api/v9/webhooks/${process.env.APPLICATION_ID}/${this.token}/messages/${messageId}`)
+		if(!res.ok) {
+			throw new Error(`Interaction response failed with code ${res.status} for /webhooks/${process.env.APPLICATION_ID}/${this.token}/messages/${messageId}`)
 		}
+
+		const json = await res.json()
+		return json
 	}
 
 	public respond(data: InteractionResponse) {

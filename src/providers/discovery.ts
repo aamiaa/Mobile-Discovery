@@ -1,4 +1,3 @@
-import axios from "axios"
 import { SearchHit } from "../classes/search_response"
 import { base64 } from "../util/base64"
 
@@ -12,12 +11,12 @@ export default class DiscoverySearch {
 	}
 
 	public async exec(visiblePage?: number): Promise<{query: string, page: number, visiblePage: number, hits: SearchHit[], count: number, pages: number}> {
-		if(visiblePage)
+		if(visiblePage) {
 			this.page = visiblePage-1
+		}
 
-		let res = await axios({
-			method: "get",
-			url: `https://discord.com/api/v9/discoverable-guilds/search?query=${this.query}&offset=${this.limit * this.page}&limit=${this.limit}&with_counts=true`,
+		const res = await fetch(`https://discord.com/api/v9/discoverable-guilds/search?query=${this.query}&offset=${this.limit * this.page}&limit=${this.limit}&with_counts=true`, {
+			method: "GET",
 			headers: {
 				Authorization: `Bot ${process.env.TOKEN}`,
 				"X-Super-Properties": base64(JSON.stringify({
@@ -39,15 +38,19 @@ export default class DiscoverySearch {
 				}))
 			}
 		})
+		if(!res.ok) {
+			throw new Error(`Failed to execute search with code ${res.status}`)
+		}
 
+		const json = await res.json()
 		return {
 			query: this.query,
 			page: this.page,
 			visiblePage: this.page + 1,
 
-			hits: res.data.guilds,
-			count: res.data.total_count,
-			pages: Math.ceil(res.data.total_count/this.limit)
+			hits: json.guilds,
+			count: json.total_count,
+			pages: Math.ceil(json.total_count/this.limit)
 		}
 	}
 }

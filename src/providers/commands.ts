@@ -1,4 +1,3 @@
-import axios from "axios"
 import fs from "fs"
 import path from "path"
 
@@ -15,14 +14,13 @@ class Commands {
 	}
 
 	public registerCommands() {
-		return axios({
-			url: `https://discord.com/api/v9/applications/${process.env.APPLICATION_ID}/commands`,
-			method: "put",
+		return fetch(`https://discord.com/api/v9/applications/${process.env.APPLICATION_ID}/commands`, {
+			method: "PUT",
 			headers: {
 				"Authorization": `Bot ${process.env.TOKEN}`,
 				"Content-Type": "application/json"
 			},
-			data: JSON.stringify([...this._commands.values()].map(x => x.data))
+			body: JSON.stringify([...this._commands.values()].map(x => x.data))
 		})
 	}
 
